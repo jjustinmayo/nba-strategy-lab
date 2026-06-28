@@ -20,6 +20,13 @@ iteratively-built project (not just tutorials).
   sign-off before writing code, rather than building straight from a one-line prompt.
 - User wants to review diffs/code during early phases as part of learning — don't skip
   explanation in favor of speed.
+- **Git/GitHub actions: user runs these themselves, not the agent.** User is
+  deliberately building muscle memory for `git status`/`add`/`commit`/`pull`/`push`,
+  branching, and conflict resolution. Default to telling the user the exact command(s)
+  to run and what to expect, rather than running git commands for them. Exceptions:
+  the agent may run read-only git commands (`status`, `log`, `diff`, `branch`) to gather
+  context for an explanation, and may still run git commands itself if the user
+  explicitly asks the agent to handle a specific git action.
 - Default to the simplest file/process structure that works; don't pre-build
   structure (extra .md files, automation, tooling) before there's a real,
   repeated pain point. When a manual step starts being done every session, or
