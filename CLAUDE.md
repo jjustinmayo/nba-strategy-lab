@@ -22,7 +22,12 @@ iteratively-built project (not just tutorials).
   explanation in favor of speed.
 
 ## Conventions
-(none yet — will fill in as decisions get made)
+- **Cross-device continuity:** user works on this repo from multiple desktops.
+  Claude Code session/chat history is stored locally per machine and does not
+  sync between devices — only what's committed to this repo carries over. So:
+  keep this file current with decisions/progress as they happen, commit often,
+  and treat git history + this file (not chat history) as the source of truth
+  for "where things stand" at the start of any new session on any machine.
 
 ## Context recap (from prior planning session)
 
