@@ -20,9 +20,35 @@ iteratively-built project (not just tutorials).
   sign-off before writing code, rather than building straight from a one-line prompt.
 - User wants to review diffs/code during early phases as part of learning — don't skip
   explanation in favor of speed.
+- Default to the simplest file/process structure that works; don't pre-build
+  structure (extra .md files, automation, tooling) before there's a real,
+  repeated pain point. When a manual step starts being done every session, or
+  a file (e.g. CLAUDE.md) starts mixing stable rules with frequently-changing
+  state, proactively flag it and recommend a concrete fix (e.g. splitting into
+  a new file, scripting a manual step) rather than waiting to be asked.
 
 ## Conventions
-(none yet — will fill in as decisions get made)
+
+### Data engineering principles (applies from Phase 1 onward)
+- **Raw vs. transformed separation**: land data from the API as-is in a
+  `raw`/staging area first; never transform in place. SQL transforms read
+  from raw and write to a separate `analytics`/`marts` layer. This keeps
+  you able to re-run transforms without re-pulling the API, and keeps a
+  source of truth if a transform has a bug.
+- **Idempotent ingestion**: re-running the same ingestion script for the
+  same date/data range should not create duplicates or fail. Prefer
+  upsert/replace logic over blind inserts.
+- **Config over hardcoding**: API keys, file paths, DB connection strings
+  go in a config/env file (not committed to git), not hardcoded in scripts.
+- **Naming convention**: tables/columns use `snake_case`; raw tables
+  prefixed `raw_`, transformed tables prefixed by their layer (e.g.
+  `stg_`, `mart_`) once Phase 2 introduces dbt-style layering.
+- **One script, one responsibility**: ingestion, transform, and
+  dashboard-serving logic live in separate scripts/modules, not one
+  monolithic file — makes it easier to test and debug each stage alone.
+- **Sanity-check after each pipeline stage**: after ingesting or
+  transforming, do a basic row-count/spot-check before moving to the next
+  stage, rather than assuming success.
 
 ## Context recap (from prior planning session)
 
