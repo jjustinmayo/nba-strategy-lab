@@ -50,6 +50,29 @@ iteratively-built project (not just tutorials).
   transforming, do a basic row-count/spot-check before moving to the next
   stage, rather than assuming success.
 
+### Cross-device & git workflow
+- **Cross-device continuity:** user works on this repo from multiple desktops.
+  Claude Code session/chat history is stored locally per machine and does not
+  sync between devices — only what's committed to this repo carries over. So:
+  keep this file current with decisions/progress as they happen, commit often,
+  and treat git history + this file (not chat history) as the source of truth
+  for "where things stand" at the start of any new session on any machine.
+- **Git workflow:** practicing real-world habits intentionally, not just
+  shipping fast, since that's part of the learning goal:
+  - Branch per feature/task (e.g. `feat/ingest-script`), merge into `main` via
+    PR even though working solo — gives a review checkpoint and a PR
+    description documenting *why*, not just *what*. Delete branches after merge.
+  - `git pull` on `main` at the start of every session on either desktop before
+    branching, to avoid branching off stale history.
+  - Never commit secrets (API keys, tokens, DB connection strings) — always
+    via `.env`, which is gitignored. Don't hardcode credentials in scripts.
+  - Don't commit data artifacts (raw pulls, exports, local DB files) — they're
+    regenerable from the pipeline, not source of truth. `.gitignore` already
+    covers `*.db`/`*.sqlite`; extend it as new artifact types show up (CSV
+    exports, parquet, etc.).
+  - Small, focused commits with messages explaining why — easier to review
+    and revert independently.
+
 ## Context recap (from prior planning session)
 
 This project was scoped in a separate chat before this folder existed. Recap of
