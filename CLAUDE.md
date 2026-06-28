@@ -133,7 +133,42 @@ Core ideas being applied here, in plain terms:
   understand the code as a learning mechanism. Revisit this once the user is more
   comfortable with the stack.
 
-**Where we left off:** project folder and git repo created, this memory file
-written, Phase 1 not yet started. Next decision point is picking the concrete data
-source (leaning toward `nba_api`, a free Python wrapper around stats.nba.com) and
-standing up the first ingestion script.
+**Where we left off (Phase 1 — first ingestion done):**
+- **Data source chosen:** `nba_api` (free, no API key, wraps stats.nba.com; already
+  exposes the lineup/clutch/shot endpoints we grow into later, so no source switch
+  between phases).
+- **First ingestion built + validated:** `ingest_team_stats.py` pulls
+  `LeagueDashTeamStats` for the current season (`2025-26`) and lands it AS-IS in a
+  `raw_team_stats` table in a local SQLite DB (`nba_strategy.db`). Idempotent per
+  season (delete-then-insert). 30 teams; 54 API columns + 2 lineage columns
+  (`season`, `ingested_at`); sanity-checked against known standings.
+- **Pandas-free on purpose:** ingestion uses only the stdlib `sqlite3` + the API's raw
+  `get_dict()` (no DataFrame layer) — see Environment note for why.
+- **Files added:** `config.py` (settings), `ingest_team_stats.py` (ingestion),
+  `requirements.txt` (pinned deps), `PYTHON_NOTES.md` (Python learning notes).
+- **DB for Phase 1:** SQLite (local file, zero-setup; graduate to Postgres/warehouse later).
+- **Next:** the transform ("T") layer — prototype strategy metrics (pace, offensive/
+  defensive efficiency, shot profiles) in a notebook with pandas, then formalize the
+  chosen transforms into a transform script writing a separate `analytics`/`mart` table
+  (preserving raw->analytics separation).
+
+## Environment & setup
+
+- **Develop inside WSL/Ubuntu (Linux), not native Windows.** Windows **Smart App
+  Control** (enforced on the primary dev machine) blocks pandas' compiled binaries
+  (`ImportError: ... An Application Control policy has blocked this file`); numpy was
+  fine, only pandas was flagged. Rather than disable a security feature or adopt a
+  niche pandas-free workaround as the long-term path, the project moved to WSL — which
+  also makes local dev mirror the Linux servers/containers everything eventually runs
+  on. Any other Windows desktop will likely hit the same wall, so use WSL there too.
+- **Per-machine setup (inside WSL):**
+  ```bash
+  cd ~ && git clone <repo-url> && cd nba-strategy-lab
+  git checkout <feature-branch>
+  python3 -m venv .venv && source .venv/bin/activate
+  pip install -r requirements.txt
+  ```
+  Keep the project in the Linux filesystem (`~/...`), NOT under `/mnt/c` (slow). Open in
+  VS Code via `code .` from the project dir (Remote-WSL; look for the `WSL: Ubuntu` badge).
+- **venv activation differs by OS:** `source .venv/bin/activate` (Linux) vs
+  `.venv\Scripts\Activate.ps1` (Windows PowerShell).
