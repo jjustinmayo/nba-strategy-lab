@@ -64,6 +64,26 @@ Working directory (your edits) -> staging area (`git add`) -> committed (`git co
 - Never commit secrets (API keys, tokens, DB connection strings) — use `.env`, which is gitignored.
 - Don't commit data artifacts (raw pulls, exports, local DB files) — regenerable, not source of truth.
 
+## First real PR/merge loop (lessons from doing it)
+
+- `gh pr create` without `--body` drops you into your default terminal editor
+  (here, `nano`) pre-filled with your commit messages, so you can edit the PR
+  description before it actually creates the PR. Save (Ctrl+O, Enter) and exit
+  (Ctrl+X) to let `gh` pick it up — see Linux/WSL notes for the keys.
+- **Creating a PR ≠ merging it.** The PR just opens for review; `main` and the
+  feature branch stay separate until you click "Merge" (or run
+  `gh pr merge <number>`).
+- **Merging ≠ deleting the branch.** Both GitHub and your local clone keep the
+  merged branch around afterward. Clean up explicitly:
+  ```bash
+  git checkout main
+  git pull
+  git branch -d feat/branch-name              # delete local branch
+  git push origin --delete feat/branch-name   # delete remote branch
+  ```
+  (GitHub's merged-PR page also has a one-click "Delete branch" button as an
+  alternative to the `push origin --delete` line.)
+
 ## Tier 3 (don't worry about yet)
 
 Rebase, cherry-pick, stash, reflog, bisect, submodules — situational tools, learn them when a real
