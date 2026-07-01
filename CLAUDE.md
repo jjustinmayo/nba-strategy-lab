@@ -24,6 +24,13 @@ DE/AI concepts themselves. See STRATEGY.md for the full problem/approach/tracks.
 - Plan before building: for non-trivial steps, lay out the approach and get explicit
   sign-off before writing code, rather than building straight from a one-line prompt.
   Sign-off is about scope/direction, not code review.
+- **Standing CE workflow for non-trivial work:** `/ce-plan` to produce a structured
+  plan doc before code is written, `/ce-work` to execute against that plan (diffs
+  still reviewable if asked), `/ce-compound` after the session to capture durable
+  learnings in `docs/solutions/` (organized by category, e.g. `design-patterns/`,
+  with YAML frontmatter — search it before implementing or debugging in an area
+  it might already cover). Small/obvious changes don't need the full loop — use
+  judgment on what counts as "non-trivial."
 - Still apply DE/software best practices under the hood (see Conventions below) even
   though the user won't review them — quality here is enforced by the agent, not by
   user inspection.
