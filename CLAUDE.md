@@ -1,10 +1,12 @@
 # NBA Strategy Lab
 
-Learning project: building an NBA on-court performance/strategy pipeline + dashboard
-end-to-end, as if working as a data/AI engineer for an NBA team. User is intermediate
-in SQL, beginner in Python, has never built a full end-to-end data pipeline before.
-Goal is to learn data engineering and AI engineering principles through a real,
-iteratively-built project (not just tutorials).
+Building an NBA on-court performance/strategy pipeline + dashboard end-to-end.
+User directs scope and judges the project by outcome (is it accurate, fast,
+useful, interesting) — not by understanding or reviewing the implementation.
+User is intermediate in SQL, beginner in Python, and has deliberately chosen
+to spend their time learning how to direct an AI agent to build a real project
+well (a "non-technical founder" posture) rather than learning to code or the
+DE/AI concepts themselves. See STRATEGY.md for the full problem/approach/tracks.
 
 ## Phase plan
 - **Phase 1 (current): MVP dashboard.** Pull league-wide stats via an NBA stats API,
@@ -14,12 +16,17 @@ iteratively-built project (not just tutorials).
 - **Phase 3:** cloud warehouse, CI/CD, monitoring, agent evaluation/guardrails.
 
 ## Working style
-- User is learning DE/AI engineering for the job market, not just trying to ship fast.
-  Explain new concepts briefly when introducing them, especially Python and DE tooling.
+- User judges this project by outcome (accuracy, speed, usefulness, "that's cool"
+  insight moments), not by understanding the code. Do not default to explaining
+  Python/DE concepts or walking through diffs line-by-line unless asked — implement,
+  then report results in outcome terms (what it does, what it shows, whether it
+  works), not implementation terms.
 - Plan before building: for non-trivial steps, lay out the approach and get explicit
   sign-off before writing code, rather than building straight from a one-line prompt.
-- User wants to review diffs/code during early phases as part of learning — don't skip
-  explanation in favor of speed.
+  Sign-off is about scope/direction, not code review.
+- Still apply DE/software best practices under the hood (see Conventions below) even
+  though the user won't review them — quality here is enforced by the agent, not by
+  user inspection.
 - **Git/GitHub actions: user runs these themselves, not the agent.** User is
   deliberately building muscle memory for `git status`/`add`/`commit`/`pull`/`push`,
   branching, and conflict resolution. Default to telling the user the exact command(s)
@@ -127,11 +134,10 @@ Core ideas being applied here, in plain terms:
 - **Plan before building**: for non-trivial work, agree on the approach explicitly
   before code gets written, rather than letting the agent build straight from a
   one-line prompt.
-- **Don't rubber-stamp diffs at scale** is the long-term direction (lean on tests/
-  validation instead of manually reviewing every line) — but deliberately NOT
-  followed yet in this project's early phases, since the user wants to read and
-  understand the code as a learning mechanism. Revisit this once the user is more
-  comfortable with the stack.
+- **Don't rubber-stamp diffs at scale**: as of 2026-06-30 the user shifted from a
+  code-review-as-learning posture to judging by outcome only (see STRATEGY.md) —
+  so the agent leans on tests/validation/sanity-checks to catch bugs itself,
+  rather than expecting the user to catch them via code review.
 
 **Where we left off (Phase 1 — first ingestion done):**
 - **Data source chosen:** `nba_api` (free, no API key, wraps stats.nba.com; already
